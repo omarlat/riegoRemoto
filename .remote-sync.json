@@ -1,0 +1,16 @@
+{
+  "uploadOnSave": false,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "192.168.0.17",
+  "port": "56838",
+  "target": "/opt/riego",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "pi",
+  "password": "os170263",
+  "watch": [],
+  "transport": "scp"
+}
