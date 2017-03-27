@@ -9,6 +9,6 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(router);
 
-app.listen(3000, function() {
-  console.log("Node server running on http://localhost:3000");
+app.listen(process.env.PORT, function() {
+  console.log("Node server running on http://localhost:"+process.env.PORT);
 });
