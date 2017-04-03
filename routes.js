@@ -1,7 +1,8 @@
 var express = require('express'),
     gpio = require('rpi-gpio'),
     router = express.Router(),
-    valveModel = require('./models/valves.js');
+    valveModel = require('./models/valves.js'),
+    interval = require('./interval.js');
 
 
 
@@ -36,6 +37,7 @@ router.get('/cerrar', function(req, res) {
         console.log('Cerrada 11');
     });
   }*/
+  interval.stop();
   res.send("Cerrada");
 });
 

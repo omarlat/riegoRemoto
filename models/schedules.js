@@ -12,14 +12,37 @@ connection = mysql.createConnection({
 });
 
 //creamos un objeto para ir almacenando todo lo que necesitemos
-var valveModel = {};
+var scheduleModel = {};
 
 //obtenemos todos los usuarios
-valveModel.getValves = function(callback)
+scheduleModel.getSchedules = function(callback)
 {
 	if (connection)
 	{
-		connection.query('SELECT * FROM VALVES ORDER BY ID', function(error, rows) {
+		connection.query('SELECT * FROM SCHEDULES ORDER BY ID', function(error, rows) {
+			if(error)
+			{
+				throw error;
+			}
+			else
+			{
+				callback(null, rows);
+			}
+		});
+	}
+}
+
+//obtenemos todos los usuarios
+scheduleModel.getOpenings = function(callback)
+{
+	if (connection)
+	{
+		connection.query('select VALVES.*'+
+                     ' from SCHEDULE JOIN VALVES ON VALVES.ID = SCHEDULE.IDVALVE'+
+                     ' where ACTIVE is TRUE'+
+                     ' and sysdate() > NEXTDATE'+
+                     ' AND sysdate() < ADDTIME(NEXTDATE, DURATION)'+
+                     ' AND VALVES.OPEN =  "C"', function(error, rows) {
 			if(error)
 			{
 				throw error;
@@ -33,11 +56,11 @@ valveModel.getValves = function(callback)
 }
 
 //obtenemos un usuario por su id
-valveModel.getValve = function(id,callback)
+scheduleModel.getValveSchedule = function(id,callback)
 {
 	if (connection)
 	{
-		var sql = 'SELECT * FROM VALVES WHERE ID = ' + connection.escape(id);
+		var sql = 'SELECT * FROM SCHEDULES WHERE VALVEID = ' + connection.escape(id);
 		connection.query(sql, function(error, row)
 		{
 			if(error)
@@ -53,4 +76,4 @@ valveModel.getValve = function(id,callback)
 }
 
 //exportamos el objeto para tenerlo disponible en la zona de rutas
-module.exports = valveModel;
+module.exports = scheduleModel;
